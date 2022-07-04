@@ -6,9 +6,9 @@ const readableStream = fs.createReadStream("./The Hunger Games.txt", {
 
 readableStream.on("readable", () => {
   try {
-    process.stdout.write(`[${readableStream.read()}]`);
+    process.stdout.write(`[${readableStream.read()}]\n`);
   } catch (error) {
-    // catch the error when the chunk cannot be read.
+    console.log(error);
   }
 });
 
