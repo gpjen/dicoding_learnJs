@@ -1,27 +1,45 @@
+// const fs = require("fs");
+
+// // read data stream
+// const readText = fs.createReadStream("./readWriteStream/output.txt", {
+//   highWaterMark: 10,
+// });
+
+// let value = "";
+
+// function readData() {
+//   try {
+//     value = readText.read();
+//     process.stdout.write(`[ ${value} ]\n`);
+//   } catch (error) {
+//     console.log("==>", error.message);
+//   }
+// }
+
+// readText.on("readable", readData);
+// readText.on("end", () => {
+//   console.log(`\n => DONE`);
+// });
+
+// ======================================================================================
+
 const fs = require("fs");
+const { resolve } = require("path");
 
-// read data stream
-const readText = fs.createReadStream("./readWriteStream/output.txt", {
-  highWaterMark: 10,
+const readableStream = fs.createReadStream(resolve(__dirname, "input.txt"), {
+  highWaterMark: 50,
 });
-// write data Stream
-// const writeText = fs.createWriteStream("./readWriteStream/output.txt");
 
-let value = "";
+const writableStream = fs.createWriteStream(resolve(__dirname, "output.txt"));
 
-function readData() {
+readableStream.on("readable", () => {
   try {
-    value = readText.read();
-    process.stdout.write(`[ ${value} ]\n`);
-    if (value === null) {
-      console.log("-----------------");
-    }
+    writableStream.write(`${readableStream.read()}\n`);
   } catch (error) {
-    console.log("==>", error.message);
+    // catch the error when the chunk cannot be read.
   }
-}
+});
 
-readText.on("readable", readData);
-readText.on("end", () => {
-  console.log(`\n => DONE`);
+readableStream.on("end", () => {
+  writableStream.end();
 });

@@ -1,0 +1,12 @@
+{
+  "name": "dasarnodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "gandi jen",
+  "license": "ISC"
+}
